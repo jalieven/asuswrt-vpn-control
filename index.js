@@ -139,7 +139,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/', express.static('webapp/build'))
+app.use('/', express.static(__dirname + '/webapp/build'))
 
 app.get('/vpn/status', async (req, res) => {
     const status = await getStatus();
