@@ -127,7 +127,7 @@ const port = 4444;
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://192.168.2.252:3000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://192.168.2.210:4444');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

@@ -12,16 +12,16 @@ function Clients() {
     const [clients, setClients] = useState([]);
 
     const fetchClients = () => {
-        return fetch('http://192.168.2.252:4444/vpn/status')
+        return fetch('http://192.168.2.210:4444/vpn/status')
             .then(response => response.json());  
     }
 
     const stopVPN = () => {
-        return fetch('http://192.168.2.252:4444/vpn/stop', { method: 'POST' });
+        return fetch('http://192.168.2.210:4444/vpn/stop', { method: 'POST' });
     }
 
     const bestVPN = () => {
-        return fetch('http://192.168.2.252:4444/vpn/best', { method: 'POST' });
+        return fetch('http://192.168.2.210:4444/vpn/best', { method: 'POST' });
     }
 
     const { run: runClients, fetches: fetchesClients } = useRequest(fetchClients, {
