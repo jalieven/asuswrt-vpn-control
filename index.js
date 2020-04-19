@@ -3,6 +3,8 @@ const request = require('superagent');
 const SSH = require('node-ssh');
 const _ = require('lodash');
 
+const config = require('./config.json');
+
 const VPN_CLIENTS = {
     1: {
         hostname: 'ams-a54.ipvanish.com'
@@ -25,18 +27,13 @@ const until = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const getSSHSession = async () => {
     const ssh = new SSH();
-    const sshSession = await ssh.connect({
-        host: 'asus-router-hostname',
-        port: 'ssh-port',
-        username: 'username',
-        privateKey: '/path/to/your/ssh/rsa/private_key'
-    });
+    const sshSession = await ssh.connect(config.asus);
     return sshSession;
 };
 
 const getIPVanishStatus = async () => {
     const ipvanishResponse = await request
-        .get('https://www.ipvanish.com/api/servers.geojson');
+        .get(config.ipvanish.servers);
     const hostnames = _.map(_.values(VPN_CLIENTS), client => client.hostname);
     return _.filter(
         JSON.parse(ipvanishResponse.text),
@@ -122,12 +119,12 @@ const switchToBestClient = async () => {
 };
 
 const app = express();
-const port = 4444;
+const port = config.express.port;
 
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://192.168.2.210:4444');
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

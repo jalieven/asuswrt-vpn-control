@@ -6,29 +6,40 @@ import {
     ReloadOutlined
   } from '@ant-design/icons';
 import { useRequest } from '@umijs/hooks';
-import Media from "react-media";
+import Media from 'react-media';
 
-function Clients() {
+import config from './../config.json';
+
+function Clients(props) {
     const [clients, setClients] = useState([]);
 
     const fetchClients = () => {
-        return fetch('http://192.168.2.210:4444/vpn/status')
-            .then(response => response.json());  
+        return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/status`)
+            .then(response => response.json())
+            .catch(function(error) {
+                message.error(error.message);
+            });  
     }
 
     const stopVPN = () => {
-        return fetch('http://192.168.2.210:4444/vpn/stop', { method: 'POST' });
+        return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/stop`, { method: 'POST' })
+            .catch(function(error) {
+                message.error(error.message);
+            }); 
     }
 
     const bestVPN = () => {
-        return fetch('http://192.168.2.210:4444/vpn/best', { method: 'POST' });
+        return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/best`, { method: 'POST' })
+            .catch(function(error) {
+                message.error(error.message);
+            }); 
     }
 
     const { run: runClients, fetches: fetchesClients } = useRequest(fetchClients, {
         fetchKey: () => 'clients',
         onSuccess: (result, params) => {
             // console.log(result);
-            if (result.length) {
+            if (result && result.length) {
                 setClients(result);
             }
         }
