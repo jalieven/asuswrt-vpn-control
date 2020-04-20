@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, message, Table, Row, Col, Space, Divider, Tag } from 'antd';
+import { Button, message, Table, Row, Col, Space, Divider, Tag, Skeleton } from 'antd';
 import {
     StopOutlined,
     DashboardOutlined,
@@ -19,21 +19,21 @@ function Clients(props) {
             .catch(function(error) {
                 message.error(error.message);
             });  
-    }
+    };
 
     const stopVPN = () => {
         return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/stop`, { method: 'POST' })
             .catch(function(error) {
                 message.error(error.message);
             }); 
-    }
+    };
 
     const bestVPN = () => {
         return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/best`, { method: 'POST' })
             .catch(function(error) {
                 message.error(error.message);
             }); 
-    }
+    };
 
     const { run: runClients, fetches: fetchesClients } = useRequest(fetchClients, {
         fetchKey: () => 'clients',
@@ -142,7 +142,7 @@ function Clients(props) {
     };
 
     return (
-        <>
+        <Space direction={"vertical"} size={"large"}>
             <Row>
                 <Space>
                     <Col span={8}>
@@ -162,7 +162,6 @@ function Clients(props) {
                     </Col>
                 </Space>
             </Row>
-            <Divider style={{ background: 'transparent' }}/>
             <Media queries={{
                 small: "(max-width: 530px)",
                 medium: "(min-width: 531px) and (max-width: 777px)",
@@ -181,7 +180,7 @@ function Clients(props) {
                     );
                 }}
             </Media>
-        </>
+        </Space>
     );
 }
 
