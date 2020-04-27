@@ -8,13 +8,11 @@ import {
 import { useRequest } from '@umijs/hooks';
 import Media from 'react-media';
 
-import config from './../config.json';
-
 function Clients(props) {
     const [clients, setClients] = useState([]);
 
     const fetchClients = () => {
-        return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/status`)
+        return fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/status`)
             .then(response => response.json())
             .catch(function(error) {
                 message.error(error.message);
@@ -22,14 +20,14 @@ function Clients(props) {
     };
 
     const stopVPN = () => {
-        return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/stop`, { method: 'POST' })
+        return fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/stop`, { method: 'POST' })
             .catch(function(error) {
                 message.error(error.message);
             }); 
     };
 
     const bestVPN = () => {
-        return fetch(`http://${config.express.hostname}:${config.express.port}/vpn/best`, { method: 'POST' })
+        return fetch(`${process.env.REACT_APP_BACKEND_BASE_URL}/best`, { method: 'POST' })
             .catch(function(error) {
                 message.error(error.message);
             }); 

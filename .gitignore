@@ -3,3 +3,6 @@
 /webapp/node_modules/
 /webapp/build/
 /.idea/
+
+/.env
+/asus_rsa

@@ -3,8 +3,6 @@ const request = require('superagent');
 const SSH = require('node-ssh');
 const _ = require('lodash');
 
-const config = require('./config.json');
-
 const VPN_CLIENTS = {
     1: {
         hostname: 'ams-a54.ipvanish.com'
@@ -27,13 +25,17 @@ const until = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const getSSHSession = async () => {
     const ssh = new SSH();
-    const sshSession = await ssh.connect(config.asus);
-    return sshSession;
+    return await ssh.connect({
+        host: process.env.ASUS_HOSTNAME,
+        port: process.env.ASUS_PORT,
+        username: process.env.ASUS_USERNAME,
+        privateKey: process.env.ASUS_PRIVATE_KEY
+    });
 };
 
 const getIPVanishStatus = async () => {
     const ipvanishResponse = await request
-        .get(config.ipvanish.servers);
+        .get(process.env.IPVANISH_SERVERS);
     const hostnames = _.map(_.values(VPN_CLIENTS), client => client.hostname);
     return _.filter(
         JSON.parse(ipvanishResponse.text),
@@ -119,7 +121,7 @@ const switchToBestClient = async () => {
 };
 
 const app = express();
-const port = config.express.port;
+const port = process.env.EXPRESS_PORT;
 
 app.use(function (req, res, next) {
 
@@ -141,17 +143,17 @@ app.use(function (req, res, next) {
 
 app.use('/', express.static(__dirname + '/webapp/build'))
 
-app.get('/vpn/status', async (req, res) => {
+app.get(`${process.env.EXPRESS_BASE_URL}/status`, async (req, res) => {
     const status = await getStatus();
     res.json(status);
 });
 
-app.post('/vpn/best', async (req, res) => {
+app.post(`${process.env.EXPRESS_BASE_URL}/best`, async (req, res) => {
     const bestCient = await switchToBestClient();
     res.json({ switchedTo: bestCient });
 });
 
-app.post('/vpn/stop', async (req, res) => {
+app.post(`${process.env.EXPRESS_BASE_URL}/stop`, async (req, res) => {
     const stoppedCient = await stopRunningClient();
     res.json({ stopped: stoppedCient });
 });
