@@ -17,7 +17,6 @@ COPY ./index.js ./index.js
 COPY ./webapp/build ./webapp/build
 # Copy config and ssh key
 COPY ./.env ./.env
-COPY ./asus_rsa ./asus_rsa
 
 # Expose port and start application
 EXPOSE 4000
