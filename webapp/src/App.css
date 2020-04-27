@@ -1,8 +1,7 @@
-.App {
-}
+@import '~antd/dist/antd.dark.css';
 
-.App-header {
-  background-color: #dfdfdf;
+.App {
+  /*background-color: #dfdfdf;*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -13,8 +12,8 @@
 }
 
 .Table-row-off {
-  background-color: #ffffff;
+  /*background-color: #ffffff;*/
 }
 .Table-row-on {
-  background-color: #a3d3ff;
+  background-color: #202020;
 }
